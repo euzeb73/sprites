@@ -1,0 +1,40 @@
+import pygame
+from screen import Screen
+
+
+class App():
+    def __init__(self, FPS=60):
+        self.FPS = 60
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        self.set_screen(1024, 768)
+
+    def set_screen(self, width, height):
+        self.screen = Screen(width, height)
+
+    def add_world(self, world):
+        self.world = world
+
+    def run(self):
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
+                    if event.key == pygame.K_LEFT:
+                        self.world.player.go_left()
+                    if event.key == pygame.K_RIGHT:
+                        self.world.player.go_rigth()
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_LEFT:
+                        self.world.player.stop()
+                    if event.key == pygame.K_RIGHT:
+                        self.world.player.stop()
+            self.world.update(self.screen)
+            self.clock.tick(self.FPS)
+            self.screen.affiche(self.world)
+        pygame.quit()
