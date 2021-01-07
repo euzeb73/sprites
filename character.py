@@ -9,7 +9,7 @@ class Character():
         self.moving=False
         self.faceleft=False
         self.speed=5 #vitesse horizontale (nb de pixels à chaque appui)
-        self.jumptop=25 #hauteur du saut en nombre de speed
+        self.jumptop=25  #hauteur du saut en nombre de speed 25
         self.width=10
         self.height=10
     def add_sprites(self,spritesdic):
