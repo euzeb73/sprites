@@ -29,6 +29,8 @@ class App():
                         self.world.player.go_left()
                     if event.key == pygame.K_RIGHT:
                         self.world.player.go_rigth()
+                    if event.key == pygame.K_SPACE:
+                        self.world.player.jump()
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
                         self.world.player.stop()

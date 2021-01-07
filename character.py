@@ -5,10 +5,11 @@ class Character():
         self.y=0
         self.sprites=dict() #dictionnaire de sprites contenant les actions possibles
         self.actions=self.sprites.keys
-        self.action='IdleR'
-        self.goingleft=False
-        self.goingright=False
-        self.speed=5
+        self.action='Idle'
+        self.moving=False
+        self.faceleft=False
+        self.speed=5 #vitesse horizontale (nb de pixels à chaque appui)
+        self.jumptop=25 #hauteur du saut en nombre de speed
         self.width=10
         self.height=10
     def add_sprites(self,spritesdic):
@@ -20,43 +21,60 @@ class Character():
         self.sprite=self.sprites[self.action]
         self.sprite.index=0
     def go_left(self):
-        if self.action!='WalkL':
-            self.change_action('WalkL')
-        self.goingleft=True
+        if self.action!='Walk' and self.action!='Jump':
+            self.change_action('Walk')
+        self.moving=True
+        self.faceleft=True
         self.update()
     def go_rigth(self):
-        if self.action!='WalkR':
-            self.change_action('WalkR')
-        self.goingright=True
+        if self.action!='Walk' and self.action!='Jump':
+            self.change_action('Walk')
+        self.moving=True
+        self.faceleft=False
+        self.update()
+    def jump(self):
+        if self.action!='Jump':
+            self.change_action('Jump')
+            self.jumpcount=0
+            self.startingalt=self.y #plus tard sera remplacé par des tests de collision
         self.update()
     def stop(self):
-        if self.goingleft:
-            self.change_action('IdleL')
-        else:
-            self.change_action('IdleR')
-        self.goingleft=False
-        self.goingright=False
+        if self.action!='Idle' and self.action!='Jump':
+            self.change_action('Idle')
+        self.moving=False
         self.update()
     def update(self):
         self.width=self.sprite.image.get_width()
         self.height=self.sprite.image.get_height()
-        if self.goingleft:
-            self.x-=self.speed
-        if self.goingright:
-            self.x+=self.speed
+        if self.moving:
+            if self.faceleft:
+                self.x-=self.speed
+            else:
+                self.x+=self.speed
+        if self.action=='Jump':
+            if self.jumpcount<self.jumptop:
+                self.y-=self.speed
+            elif self.jumpcount>self.jumptop:
+                if self.y<self.startingalt:
+                    self.y+=self.speed
+                elif self.moving:
+                    self.change_action('Walk')
+                else:
+                    self.change_action('Idle')
+            self.jumpcount+=1
         self.sprite.rect[0]=self.x
         self.sprite.rect[1]=self.y
-        self.sprite.update()
+        self.sprite.update(self.faceleft)
     def hit_right(self):
         self.x-=self.speed
         self.sprite.rect[0]=self.x
         self.sprite.rect[1]=self.y
-        self.sprite.update()
+        self.sprite.update(False)
     def hit_left(self):
         self.x+=self.speed
         self.sprite.rect[0]=self.x
         self.sprite.rect[1]=self.y
-        self.sprite.update()
+        self.sprite.update(True)
 
 
 
