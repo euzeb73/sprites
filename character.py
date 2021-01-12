@@ -43,9 +43,7 @@ class Character():
             self.change_action('Idle')
         self.moving=False
         self.update()
-    def update(self):
-        self.width=self.sprite.image.get_width()
-        self.height=self.sprite.image.get_height()
+    def update(self):  
         if self.moving:
             if self.faceleft:
                 self.x-=self.speed
@@ -62,18 +60,20 @@ class Character():
                 else:
                     self.change_action('Idle')
             self.jumpcount+=1
-        self.sprite.rect[0]=self.x
-        self.sprite.rect[1]=self.y
+        self.sprite.recttight[0]=self.x
+        self.sprite.recttight[1]=self.y
         self.sprite.update(self.faceleft)
+        self.width=self.sprite.recttight[2]
+        self.height=self.sprite.recttight[3]
     def hit_right(self):
         self.x-=self.speed
-        self.sprite.rect[0]=self.x
-        self.sprite.rect[1]=self.y
+        self.sprite.recttight[0]=self.x
+        self.sprite.recttight[1]=self.y
         self.sprite.update(False)
     def hit_left(self):
         self.x+=self.speed
-        self.sprite.rect[0]=self.x
-        self.sprite.rect[1]=self.y
+        self.sprite.recttight[0]=self.x
+        self.sprite.recttight[1]=self.y
         self.sprite.update(True)
 
 
