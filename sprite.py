@@ -2,19 +2,21 @@ import pygame
 import glob
 
 class Sprite(pygame.sprite.Sprite):
-    def __init__(self,action):
+    def __init__(self,action,dir):
         super().__init__()
         self.action = action
         self.images = []
         self.index=-1
         self.animslowingfact=1
-        self.reducratio=5 #par rapport au fichier d'origine facteur pour diminuer la taille du sprite
+        self.reducratio=3 #par rapport au fichier d'origine facteur pour diminuer la taille du sprite
+        self.dir=dir
         self.load_images()
         self.update(False)
         
+        
  
     def load_images(self):
-        list_imgs = glob.glob("dino/{}*.png".format(self.action)) #liste des fichiers image
+        list_imgs = glob.glob("{}/{}*.png".format(self.dir,self.action)) #liste des fichiers image
         temp_imgs=[]
         for img in list_imgs:
             #On charge et réduit l'image

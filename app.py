@@ -31,11 +31,21 @@ class App():
                         self.world.player.go_rigth()
                     if event.key == pygame.K_SPACE:
                         self.world.player.jump()
+                    if event.key == pygame.K_KP4:
+                        self.world.characters[1].go_left()
+                    if event.key == pygame.K_KP6:
+                        self.world.characters[1].go_rigth()
+                    if event.key == pygame.K_KP8:
+                        self.world.characters[1].jump()
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
                         self.world.player.stop()
                     if event.key == pygame.K_RIGHT:
                         self.world.player.stop()
+                    if event.key == pygame.K_KP4:
+                        self.world.characters[1].stop()
+                    if event.key == pygame.K_KP6:
+                        self.world.characters[1].stop()
             self.world.update(self.screen)
             self.clock.tick(self.FPS)
             self.screen.affiche(self.world)
