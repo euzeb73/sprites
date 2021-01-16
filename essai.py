@@ -15,8 +15,8 @@ spritesdic['Walk']=go
 spritesdic['Jump']=jump
 Lucky=Character()
 Lucky.add_sprites(spritesdic)
-Lucky.jumptop=1000
-Lucky.speed=23
+Lucky.jumptop=40
+Lucky.speed=10
 
 #Abigaelle
 stop=Sprite('Idle','avgirl')
@@ -33,9 +33,10 @@ Abigaelle=Character()
 Abigaelle.add_sprites(spritesdic)
 Abigaelle.faceleft=True
 Abigaelle.x=900
-Abigaelle.y=400
-Abigaelle.jumptop=100
-Abigaelle.speed=30
+# Abigaelle.y=400-(Abigaelle.sprite.rect[3]-Lucky.sprite.rect[3])
+Abigaelle.y=390
+Abigaelle.jumptop=20
+Abigaelle.speed=13
 
 monde=World(Lucky)
 monde.characters.append(Abigaelle)
