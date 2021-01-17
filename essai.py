@@ -2,41 +2,24 @@ from app import App
 from world import World
 from character import Character
 from sprite import Sprite
-#player Lucky
-stop=Sprite('Idle','png')
-stop.animslowingfact=3
-go=Sprite('Walk','png')
-go.animslowingfact=2
-jump=Sprite('Jump','png')
-jump.animslowingfact=2
-spritesdic=dict()
-spritesdic['Idle']=stop
-spritesdic['Walk']=go
-spritesdic['Jump']=jump
+
+#Lucky
 Lucky=Character()
-Lucky.add_sprites(spritesdic)
-Lucky.jumptop=40
-Lucky.speed=10
+Lucky.add_sprites('png')
+Lucky.change_size(2)
+Lucky.jumptop=1000
+Lucky.speed=40
 
 #Abigaelle
-stop=Sprite('Idle','avgirl')
-stop.animslowingfact=3
-go=Sprite('Walk','avgirl')
-go.animslowingfact=4
-jump=Sprite('Jump','avgirl')
-jump.animslowingfact=2
-spritesdic=dict()
-spritesdic['Idle']=stop
-spritesdic['Walk']=go
-spritesdic['Jump']=jump
 Abigaelle=Character()
-Abigaelle.add_sprites(spritesdic)
+Abigaelle.add_sprites('avgirl')
+Abigaelle.change_size(2.5)
 Abigaelle.faceleft=True
 Abigaelle.x=900
 # Abigaelle.y=400-(Abigaelle.sprite.rect[3]-Lucky.sprite.rect[3])
 Abigaelle.y=390
-Abigaelle.jumptop=20
-Abigaelle.speed=13
+Abigaelle.jumptop=40
+Abigaelle.speed=90 
 
 monde=World(Lucky)
 monde.characters.append(Abigaelle)

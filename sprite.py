@@ -2,28 +2,27 @@ import pygame
 import glob
 
 class Sprite(pygame.sprite.Sprite):
-    def __init__(self,action,dir):
+    def __init__(self,action,dir,reducratio=3):
         super().__init__()
         self.action = action
         self.images = []
         self.index=-1
         self.animslowingfact=1
-        self.reducratio=3 #par rapport au fichier d'origine facteur pour diminuer la taille du sprite
-        self.dir=dir
-        self.load_images()
-        self.update(False)
+        self.dir=dir #Répertoire
+        self.change_size(reducratio)
         
         
- 
+    
     def load_images(self):
         list_imgs = glob.glob("{}/{}*.png".format(self.dir,self.action)) #liste des fichiers image
         temp_imgs=[]
+        self.images = []
         for img in list_imgs:
             #On charge et réduit l'image
             image=pygame.image.load(img)
             width=image.get_width()
             height=image.get_height()
-            image=pygame.transform.smoothscale(image,(width//self.reducratio,height//self.reducratio))
+            image=pygame.transform.smoothscale(image,(int(width/self.reducratio),int(height/self.reducratio)))
             #On stocke les images dans une liste
             if len(img) == len(list_imgs[0]): #de 0 à 9
                 self.images.append(image)
@@ -33,7 +32,12 @@ class Sprite(pygame.sprite.Sprite):
         self.index = 0
         self.recttight=self.images[0].get_bounding_rect()
         self.rect=self.images[0].get_rect()
- 
+    
+    def change_size(self,reducratio):
+        self.reducratio=reducratio #par rapport au fichier d'origine facteur pour diminuer la taille du sprite
+        self.load_images()
+        self.update(False)
+
     def update(self,faceleft):
         imagenum=self.index//self.animslowingfact
         if imagenum == len(self.images)-1:

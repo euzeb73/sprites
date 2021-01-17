@@ -1,10 +1,13 @@
 import pygame
+import glob
+from sprite import Sprite
+
 class Character():
     def __init__(self):
         self.x=0 #position en pixels du coin sup gauche
         self.y=0
         self.sprites=dict() #dictionnaire de sprites contenant les actions possibles
-        self.actions=self.sprites.keys
+        self.actions=self.sprites.keys()
         self.action='Idle'
         self.moving=False
         self.faceleft=False
@@ -12,10 +15,25 @@ class Character():
         self.jumptop=25  #hauteur du saut en nombre de speed 25
         self.width=10
         self.height=10
-    def add_sprites(self,spritesdic):
-        #à automatiser en fonction d'une liste d'action plus tard)
+
+    def add_sprites(self,directory):
+        '''charger les sprites situés dans le répertoire dic'''
+        actions_files=glob.glob("{}/*(1).png".format(directory))
+        spritesdic=dict()
+        for file in actions_files:
+            action=file.split(' ')[0].split('\\')[1]
+            sprite=Sprite(action,directory)
+            sprite.animslowingfact=3
+            spritesdic[action]=sprite
         self.sprites=spritesdic
         self.sprite=spritesdic[self.action]
+        self.actions=self.sprites.keys()
+
+    def change_size(self,reducratio):
+        '''change la taille de tous les sprites'''
+        for action in self.actions:
+            self.sprites[action].change_size(reducratio)
+
     def change_action(self,action):
         self.action=action
         self.sprite=self.sprites[self.action]
