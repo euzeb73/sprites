@@ -29,10 +29,21 @@ class Character():
         self.sprite=spritesdic[self.action]
         self.actions=self.sprites.keys()
 
+    
     def change_size(self,reducratio):
         '''change la taille de tous les sprites'''
         for action in self.actions:
             self.sprites[action].change_size(reducratio)
+
+    def change_animspeed(self,animspeed,spritesaction=[]):
+        '''change la vitesse danim pour les sprites dde la liste spritesaction
+        ou pour tous si pas d'argument ou liste vide'''
+        if spritesaction:
+            for sprite in spritesaction:
+                self.sprites[sprite].animslowingfact=animspeed
+        else:
+            for sprite in self.sprites.values:
+                sprite.animslowingfact=animspeed
 
     def change_action(self,action):
         self.action=action
