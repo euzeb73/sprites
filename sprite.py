@@ -12,7 +12,6 @@ class Sprite(pygame.sprite.Sprite):
         self.change_size(reducratio)
         
         
-    
     def load_images(self):
         list_imgs = glob.glob("{}/{}*.png".format(self.dir,self.action)) #liste des fichiers image
         temp_imgs=[]
@@ -36,24 +35,30 @@ class Sprite(pygame.sprite.Sprite):
     def change_size(self,reducratio):
         self.reducratio=reducratio #par rapport au fichier d'origine facteur pour diminuer la taille du sprite
         self.load_images()
-        self.update(False)
+        self.update_img(False)
 
-    def update(self,faceleft):
-        imagenum=self.index//self.animslowingfact
+    def update_img(self,faceleft):
+        imagenum=int(self.index/self.animslowingfact)
         if imagenum == len(self.images)-1:
             self.index = 0
         else:
             self.index += 1
         if faceleft:
-            self.image = pygame.transform.flip(self.images[self.index//self.animslowingfact],True,False)
+            self.image = pygame.transform.flip(self.images[imagenum],True,False)
         else:
-            self.image = self.images[self.index//self.animslowingfact]
+            self.image = self.images[imagenum]
         #pour gérer la différence entre le rectangle au plus petit et celui de l'image
-        recttight=self.image.get_bounding_rect() #au plus près des pixels visibles
-        rectimg=self.image.get_rect() #large
-        xshift=recttight[0]-rectimg[0] #on fixe le pooint à gauche
-        yshift=recttight[1]+recttight[3]-rectimg[1]-rectimg[3] #on fixe le point en bas du sprite
-        self.rect=rectimg
-        self.rect[0]=self.recttight[0]-xshift
-        self.rect[1]=self.recttight[1]+yshift
-        self.recttight[2:4]=recttight[2:4]
+        self.recttight=self.image.get_bounding_rect() #au plus près des pixels visibles
+
+    def update_pos(self,x,y):
+        ''' x,y est la position du coin inférieur gauche'''
+        # xshift=recttight[0]-rectimg[0] #on fixe le pooint à gauche
+        xshift=self.recttight[0]
+        # yshift=recttight[1]+recttight[3]-rectimg[1]-rectimg[3] #on fixe le point en bas du sprite
+        yshift=self.recttight[1]
+        self.rect=self.image.get_rect()
+        self.rect[0]=x-xshift
+        self.rect[1]=y-yshift-self.recttight[3]
+        self.recttight[0]=x # Pour garder un rectangle autour du sprite au bon endroit
+        self.recttight[1]=y-self.recttight[3] 
+        
