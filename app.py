@@ -23,6 +23,8 @@ class App():
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
+                    if event.key == pygame.K_f:
+                        self.screen.switch_full()
                     if event.key == pygame.K_LEFT:
                         self.world.player.go_left()
                     if event.key == pygame.K_RIGHT:

@@ -24,6 +24,7 @@ class Screen():
         self.window=pygame.display.set_mode(
             (self.width, self.height))
         self.fontsmall = Font('segoescript', 16)  # initialise la police petite
+        self.firstime=True
     def switch_full(self):
         if self.fullscreen:
             flag=0
@@ -36,7 +37,7 @@ class Screen():
     def affiche_life(self,player):
         life=player.life
         self.fontsmall.addtext('Life: {}'.format(
-            life), 'Life', (0, 200, 255))
+            life), 'Life', (0, 100, 155))
         window=self.window.get_rect()
         surface = self.fontsmall.textdic['Life']
         w, h = surface.get_size()
@@ -44,9 +45,12 @@ class Screen():
 
     def affiche(self,world):
         #Fond
-        self.window.fill(world.bgcolor)
+        if self.firstime:
+            self.bg=pygame.image.load('./bg/'+world.bg)
+            self.firstime=False
+        self.window.blit(self.bg,self.window.get_rect())
         #Sol
-        pygame.draw.line(self.window,(100,100,50),(0,world.ground),(self.width,world.ground),4)
+        # pygame.draw.line(self.window,(100,100,50),(0,world.ground),(self.width,world.ground),4)
         #Sprites
         group_to_draw=pygame.sprite.Group()
         for movbod in world.movbods:

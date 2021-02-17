@@ -1,15 +1,16 @@
 import pygame
 import random
 from movbod import Bullet
+from fruits import Fruits,Fruitsdic
 
 class World():
     def __init__(self,player):
         self.player=player
         self.movbods=[self.player] #Moving bodies
-        self.ground=600
+        self.ground=700
         self.player.x=0
         self.player.y=self.ground
-        self.bgcolor=(200,0,100)
+        self.bg='field.jpeg'
         self.enemyclock=pygame.time.get_ticks() #time in ms
         self.enemyperiod=2000 #en ms la période moyenne pour spwan les ennemis
         self.bonusclock=pygame.time.get_ticks() #time in ms
@@ -44,24 +45,14 @@ class World():
         current_time=pygame.time.get_ticks() #time in ms
         if current_time - self.bonusclock>random.gauss(self.bonusperiod,self.bonusperiod*0.1):            
             self.bonusclock=current_time
-            #####
-            # Faire une classe enemy et des sous classe pour chaque type
-            # Faire une sous classe hache de la classe bullet avec tout les paramètres
-            #####
-            apple=Bullet()
-            apple.action='Idle'
-            self.add_movbod(apple)
-            apple.add_sprites('pomme')
-            apple.change_size(3) #taille
-            apple.change_animspeed(4) #un peu moins vite
-            width=apple.sprite.recttight[2]
+            fruitlist=list(Fruitsdic().bonus.keys())
+            i=random.randint(0,len(fruitlist)-1)
+            fruit=Fruits(fruitlist[i])
+            self.add_movbod(fruit)
+            width=fruit.sprite.recttight[2]
             ph=self.player.height
-            apple.y=min(self.ground-random.gauss(2*ph,0.5*ph),self.ground)
-            # apple.x=min(max(random.gauss(screen.width/2,screen.width/10),width),screen.width-width)
-            apple.x=random.uniform(0,screen.width-width)
-            apple.moving=False
-            apple.damage=-1
-            apple.update()
+            fruit.y=min(self.ground-random.gauss(2*ph,0.5*ph),self.ground)
+            fruit.x=random.uniform(0,screen.width-width)
             
     def handle_collision(self,target):
         for movbod2 in self.movbods:
