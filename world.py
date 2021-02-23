@@ -5,11 +5,10 @@ from fruits import Fruits,Fruitsdic
 
 class World():
     def __init__(self,player):
-        self.player=player
-        self.movbods=[self.player] #Moving bodies
+        self.players=[]
+        self.movbods=[] #Moving bodies
         self.ground=700
-        self.player.x=0
-        self.player.y=self.ground
+        self.add_player(player)
         self.bg='field.jpeg'
         self.enemyclock=pygame.time.get_ticks() #time in ms
         self.enemyperiod=2000 #en ms la période moyenne pour spwan les ennemis
@@ -17,8 +16,16 @@ class World():
         self.bonusperiod=self.enemyperiod*5 #en ms la période moyenne pour spwan les ennemis
         
     def add_movbod(self,movbod):
-        movbod.y=self.ground
         self.movbods.append(movbod)
+    
+    def add_player(self,player):        
+        n=len(self.players)
+        if n<2:
+            self.players.append(player)
+        player.x=0
+        player.y=self.ground
+        self.add_movbod(player)
+        
 
     def generate_enemies(self,screen):
         current_time=pygame.time.get_ticks() #time in ms
@@ -50,16 +57,16 @@ class World():
             fruit=Fruits(fruitlist[i])
             self.add_movbod(fruit)
             width=fruit.sprite.recttight[2]
-            ph=self.player.height
+            ph=min(self.players[0].height,self.players[1].height) #à réécrire en fonction de la hauteur de saut
             fruit.y=min(self.ground-random.gauss(2*ph,0.5*ph),self.ground)
             fruit.x=random.uniform(0,screen.width-width)
-            
+
     def handle_collision(self,target):
         for movbod2 in self.movbods:
             if target is not movbod2 and movbod2.damage!=0:
                 if pygame.sprite.collide_mask(target.sprite,movbod2.sprite):
                     damage=movbod2.damage
-                    if damage>0 and self.player.hitable: #pour les collisions avec les bullets
+                    if damage>0 and target.hitable: #pour les collisions avec les bullets
                         target.invicible_clock=pygame.time.get_ticks()
                         target.hitable=False
                         target.life-=damage
@@ -79,4 +86,5 @@ class World():
                 movbod.hit_right(self)
             if movbod.x < 0:
                 movbod.hit_left(self)
-        self.handle_collision(self.player)
+        for player in self.players:
+            self.handle_collision(player)

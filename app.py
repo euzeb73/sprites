@@ -26,26 +26,26 @@ class App():
                     if event.key == pygame.K_f:
                         self.screen.switch_full()
                     if event.key == pygame.K_LEFT:
-                        self.world.player.go_left()
+                        self.world.players[0].go_left()
                     if event.key == pygame.K_RIGHT:
-                        self.world.player.go_right()
+                        self.world.players[0].go_right()
                     if event.key == pygame.K_SPACE:
-                        self.world.player.jump()
+                        self.world.players[0].jump()
                     if event.key == pygame.K_KP4:
-                        self.world.characters[1].go_left()
+                        self.world.players[1].go_left()
                     if event.key == pygame.K_KP6:
-                        self.world.characters[1].go_right()
+                        self.world.players[1].go_right()
                     if event.key == pygame.K_KP8:
-                        self.world.characters[1].jump()
+                        self.world.players[1].jump()
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
-                        self.world.player.stop()
+                        self.world.players[0].stop()
                     if event.key == pygame.K_RIGHT:
-                        self.world.player.stop()
+                        self.world.players[0].stop()
                     if event.key == pygame.K_KP4:
-                        self.world.characters[1].stop()
+                        self.world.players[1].stop()
                     if event.key == pygame.K_KP6:
-                        self.world.characters[1].stop()
+                        self.world.players[1].stop()
 
     def run(self):
         self.running = True

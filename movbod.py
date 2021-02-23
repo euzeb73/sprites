@@ -5,7 +5,7 @@ import pygame
 from sprite import Sprite
 
 
-class Mooving_body():
+class Moving_body():
     def __init__(self):
         self.x=0 #position en pixels du coin inf gauche
         self.y=0
@@ -101,7 +101,7 @@ class Mooving_body():
         self.height=self.sprite.recttight[3]
         self.sprite.update_pos(self.x,self.y) #position coin inf gauche
 
-class Bullet(Mooving_body):
+class Bullet(Moving_body):
     '''Pour les projectiles, détruits quand ils sortent de l'écran'''
     #####
     # Faire une classe enemy et des sous classe pour chaque type
@@ -131,8 +131,8 @@ class Bullet(Mooving_body):
         self.height=self.sprite.recttight[3]
         self.sprite.update_pos(self.x,self.y) #position coin inf gauche
 
-
-class Character(Mooving_body):
+#A mettre dans un autre fichier à partir d'ici
+class Character(Moving_body):
     def __init__(self):
         super().__init__()
         self.jumptop=25  #hauteur du saut en nombre de speed 25
@@ -191,3 +191,20 @@ class Player(Character):
         self.sprite.recttight[0]=self.x
         # self.sprite.recttight[1]=self.y
         self.sprite.update(faceleft=True)
+
+class Lucky(Player):
+    def __init__(self):
+        super().__init__()
+        self.add_sprites('spirit')
+        self.change_size(1.8)
+        self.jumptop=20
+        self.speed=15
+
+class Abigaelle(Player):
+    def __init__(self):
+        super().__init__()
+        self.add_sprites('gdton')
+        self.change_size(1.8)
+        self.change_animspeed(10,['Jump'])
+        self.jumptop=20
+        self.speed=15

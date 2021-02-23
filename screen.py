@@ -34,14 +34,22 @@ class Screen():
         self.window=pygame.display.set_mode(
             (self.width, self.height),flag)
     
-    def affiche_life(self,player):
+    def affiche_life(self,player,playernum=1):
         life=player.life
+        if playernum==1:
+            color=(0, 100, 155)
+        elif playernum==2:
+            color=(155,100,0)
         self.fontsmall.addtext('Life: {}'.format(
-            life), 'Life', (0, 100, 155))
+            life), 'Life',color )
         window=self.window.get_rect()
         surface = self.fontsmall.textdic['Life']
         w, h = surface.get_size()
-        self.window.blit(surface, (window.left+w, window.top+2*h))
+        if playernum==1:
+            posx=window.left+w
+        elif playernum==2:
+            posx=window.right-2*w
+        self.window.blit(surface, (posx, window.top+2*h))
 
     def affiche(self,world):
         #Fond
@@ -56,7 +64,8 @@ class Screen():
         for movbod in world.movbods:
             group_to_draw.add(movbod.sprite)
         group_to_draw.draw(self.window)
-        self.affiche_life(world.player)
+        for i,player in enumerate(world.players):
+            self.affiche_life(player,i+1)
         #LEs rectangles pour suivre ce qu'il se passse
         # for movbod in world.movbods:
         #     gdrec=movbod.sprite.rect
